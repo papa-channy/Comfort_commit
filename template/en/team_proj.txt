@@ -1,0 +1,11 @@
+Analyze the code changes shown in {change} and write a commit message suitable for a collaborative team project.
+
+Your commit message should follow the Conventional Commit format:
+<type>(optional scope): <summary>
+
+Then include an optional body that explains:
+- Why this change was made (e.g. bug fix, feature addition, refactor)
+- What the key modifications are
+- Any additional information that may help team members understand the impact
+
+Choose the most appropriate type (e.g., feat, fix, refactor, chore, docs) and keep the summary concise and meaningful. Write the message in a way that your teammates can quickly understand what changed and why — without needing to review the full diff.

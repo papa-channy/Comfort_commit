@@ -1,0 +1,9 @@
+Review the code changes described in {change} and write a comprehensive commit message that captures the intent, motivation, and implementation details of the update.
+
+Start with a clear summary line that describes what was changed. Then, in the body of the message, explain:
+- Why these changes were necessary (e.g., bug, refactor, improvement, feature).
+- What the key logic or files affected are.
+- How the changes were implemented, including any important design decisions or trade-offs.
+- Any edge cases considered, limitations introduced, or follow-up tasks required.
+
+Use concise but informative language so that a future developer (including myself) can understand not just what changed, but the context and reasoning behind the change without reading the entire diff.

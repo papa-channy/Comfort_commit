@@ -1,0 +1,77 @@
+📦 gpt_commit_assistant/
+├── config/                # ⚙️ 설정 파일 저장소
+│   ├── conf.json             # 시스템 내부 설정
+│   └── user_config.yml       # 사용자 맞춤 설정 (확장자, 모델 등)
+
+├── DB/                    # 🗃️ 데이터베이스 정의 및 캐시
+│   ├── 4dev.sql              # 전체 테이블/트리거 스키마 정의
+│   ├── dynamo_cache.db       # DynamoDB/캐시 테스트용 DB
+│   └── parse.db              # 파싱 결과 저장용 로컬 DB
+
+├── LLM/                   # 🧠 LLM 라우팅 및 모델 파일
+│   ├── llama4-*.py            # Fireworks llama4 모델 (maverick/scout)
+│   ├── llm_manager.py         # LLM 통합 호출 관리자
+│   └── llm_router.py          # provider/model 기반 라우팅 처리
+
+├── prep/                  # 📝 기술 설명 및 메시지 입력 구성
+│   ├── describe_prompt.py     # 기술 설명용 프롬프트 생성
+│   ├── diff.py                # diff 정보 파싱 및 정제
+│   ├── dir_structure.py       # 디렉토리 트리 분석
+│   ├── latest_commit.py       # 최근 커밋 메시지 추출
+│   ├── msg_prompt.py          # 커밋 메시지 생성 프롬프트 구성
+│   └── summary_readme.py      # README 유무/요약 추출
+
+├── scoping/              # 🔍 변경 파일 감지 및 유사도 클러스터링
+│   ├── clustering.py          # 함수/파일 유사도 기반 그룹핑
+│   ├── conv_df.py             # diff → group_df 변환기
+│   ├── extract_rel_fx.py      # 함수별 사용 위치 추적기
+│   ├── extract_select_features.py # 파일간 유사도 feature 추출기
+│   ├── feature.json           # 유사도 feature 정의 목록
+│   ├── import_flow.py         # import 기반 의존 분석
+│   ├── listup.py              # git diff 기반 변경 파일 리스트업
+│   └── weight.json            # feature별 유사도 가중치 설정
+
+├── temp/                  # 🧊 실행 중간 캐시 결과
+│   ├── describe.pkl           # describe 단계 결과
+│   └── mk_msg.pkl             # 커밋 메시지 생성용 데이터
+
+├── template/              # 💬 커밋 메시지 템플릿 (언어/스타일별)
+│   ├── en/                     # 영어 커밋 메시지 템플릿
+│   └── ko/                     # 한국어 커밋 메시지 템플릿
+│       └── *.txt               # internal, team_proj 등 메시지 스타일별
+
+├── test/                  # 🧪 테스트/진단 스크립트
+│   └── check_err.py           # Slack, Git, API 연동 점검
+
+├── upload/                # ⬆️ 업로드 및 알림 처리
+│   ├── archive/               # 기록 저장 (Notion, Slack)
+│   │   ├── notion.py
+│   │   └── slack.py
+│
+│   ├── noti/                  # 실시간 알림 전송
+│   │   ├── discord.py
+│   │   ├── gmail.py
+│   │   ├── kakao.py
+│   │   └── slack.py
+│
+│   ├── commit.py              # Git 커밋 실행기
+│   ├── upload.py              # 업로드 전체 컨트롤
+│   └── upload_utils.py        # 유틸 함수
+
+├── utils/                 # 🔧 보조 모듈 및 캐시
+│   ├── calc_cost.py           # LLM 비용 계산기
+│   ├── ex_rate.txt            # 환율 캐시 (일일 초기화)
+│   └── structure.txt          # 디렉토리 구조 캐시
+
+├── Web/                   # 🌐 웹 인터페이스 (FastAPI)
+│   ├── static/                # JS, CSS, 이미지 등 정적 파일
+│   ├── templates/             # HTML 템플릿 (Jinja2)
+│   └── server.py              # FastAPI 앱 실행 엔트리포인트
+
+├── .env                   # 🌱 환경 설정
+├── .env.example
+├── .gitignore
+├── LICENSE
+├── README.md
+├── requirements.txt       # 📦 Python 패키지 목록
+└── run_all.py             # ▶️ 전체 실행 스크립트

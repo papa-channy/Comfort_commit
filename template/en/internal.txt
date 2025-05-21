@@ -1,0 +1,8 @@
+Given the code changes in {change}, write a concise and informative commit message suitable for personal or internal use.
+
+The message should include:
+- A short summary line describing what was changed
+- A brief explanation of why the change was necessary, if relevant
+- Any technical context or intent worth remembering in the future
+
+Keep the message clear and to the point, but make sure it still explains the purpose and logic behind the change so that your future self can understand it without reviewing the full code diff.

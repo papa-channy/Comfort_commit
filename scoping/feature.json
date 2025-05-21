@@ -1,0 +1,90 @@
+[
+  {
+    "name": "def_jaccard",
+    "index": 0,
+    "type": "numeric",
+    "mode": "static",
+    "safe": true,
+    "description": "def Jaccard 유사도"
+  },
+  {
+    "name": "import_jaccard",
+    "index": 1,
+    "type": "numeric",
+    "mode": "static",
+    "safe": true,
+    "description": "import Jaccard 유사도"
+  },
+  {
+    "name": "filename_semantic_jaccard",
+    "index": 2,
+    "type": "numeric",
+    "mode": "static",
+    "safe": true,
+    "description": "파일명 jaccard의미 유사도"
+  },
+  {
+    "name": "import_path_overlap_score",
+    "index": 3,
+    "type": "numeric",
+    "mode": "static",
+    "safe": true,
+    "description": "각 파일의 import 경로 트리를 비교해, 가장 긴 공통 prefix 깊이를 기반으로 계산한 유사도 점수"
+  },
+  {
+    "name": "folder_prefix_match",
+    "index": 4,
+    "type": "binary",
+    "mode": "static",
+    "safe": true,
+    "description": "상위 폴더명 일치 여부"
+  },
+  {
+    "name": "module_level_overlap",
+    "index": 5,
+    "type": "numeric",
+    "mode": "static",
+    "safe": true,
+    "description": "공통 상위 모듈 (common/core 등) 중첩도"
+  },
+  {
+    "name": "error_type_overlap_score",
+    "index": 6,
+    "type": "numeric",
+    "mode": "execution",
+    "safe": false,
+    "description": "실행 실패 시 에러 타입 유사도"
+  },
+  {
+    "name": "traceback_lastline_sim",
+    "index": 7,
+    "type": "numeric",
+    "mode": "execution",
+    "safe": false,
+    "description": "마지막 traceback 라인 유사도"
+  },
+  {
+    "name": "traceback_module_name_match",
+    "index": 8,
+    "type": "numeric",
+    "mode": "execution",
+    "safe": false,
+    "description": "에러 메시지 내 모듈명 일치율"
+  },
+  {
+    "name": "failed_execution_signal",
+    "index": 9,
+    "type": "binary",
+    "mode": "execution",
+    "safe": false,
+    "description": "실행 실패 여부"
+  },
+  {
+    "name": "error_line_depth_ratio",
+    "index": 10,
+    "type": "numeric",
+    "mode": "execution",
+    "safe": false,
+    "description": "stack trace 깊이 기반 복잡도"
+  }
+]

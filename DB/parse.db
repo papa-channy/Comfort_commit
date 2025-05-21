@@ -1,0 +1,23 @@
+### 로컬 DB + 클라우드 병렬 구조 추천
+
+| 목적 | 추천 구조 |
+| --- | --- |
+| 사용자 설정 및 기록 | **SQLite** (로컬, 빠르고 간단) |
+| 최근 요약 캐시 | **DynamoDB or Redis (ElastiCache)** |
+| 최종 커밋 결과 저장 | **RDS (PostgreSQL)** |
+| 실시간 작업 queue | **SQS + Lambda or ECS** |
+
+---
+
+보스님 구조면 이런 식으로:
+
+1. **로컬 SQLite로 파일 분석하고 UUID 저장**
+2. 커밋 요약은 DynamoDB에 한 줄씩 기록 (TTL 30일 설정)
+3. 커밋 확정 시만 RDS로 영구 저장
+4. API 호출/Slack 전송은 ECS or Lambda에서 감당
+
+---
+
+이 구조는 비용 절감 + 속도 + 복구 용이성까지 다 갖췄습니다.
+
+CPU 병목도 AWS Fargate or GPU spot instance로 해결 가능.

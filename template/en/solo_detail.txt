@@ -1,0 +1,8 @@
+Review the code changes in {change} and write a detailed and expressive commit message suitable for a personal or side project.
+
+You can be more flexible with structure and tone, but your message should include:
+- A one-line summary of what changed
+- A longer explanation of your thought process, why you made the change, and how it works
+- Any notes to your future self: caveats, edge cases, ideas for future improvement, or questions you had while working
+
+This commit message is primarily for your own future reference, so feel free to include informal thoughts that would help you quickly recall your reasoning and decisions later.

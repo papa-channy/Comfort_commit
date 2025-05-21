@@ -1,0 +1,12 @@
+Using the code changes in {change}, write a detailed, thoughtful commit message that will serve as a high-quality note for future technical documentation or book writing based on this project.
+
+The message should go well beyond what changed — it should describe:
+- What problem or goal this commit addresses, and why it matters in the broader context of the project
+- The reasoning behind how the solution was approached or chosen (including rejected ideas, experiments, or tradeoffs)
+- The underlying principles, architecture, or design patterns that influenced this change
+- Any challenges or unexpected behaviors encountered while implementing it
+- Reflections on what was learned from this change, and how it may relate to other parts of the system
+
+Feel free to include technical insights, emotional reactions, references to external sources, or even rhetorical questions you were asking yourself while working on this.
+
+Think of this as a private “development log” for your future self — a resource to refer back to when writing a chapter that discusses this part of the system in depth.

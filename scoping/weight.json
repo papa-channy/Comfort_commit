@@ -1,0 +1,16 @@
+{
+  "default": {
+    "weight": {
+      "def_jaccard": 3.0,
+      "import_jaccard": 2.5,
+      "filename_semantic_jaccard": 1.2,
+      "folder_prefix_match": 2.0,
+      "module_level_overlap": 1.0,
+      "error_type_overlap_score": 0.1,
+      "traceback_lastline_sim": 0.1,
+      "traceback_module_name_match": 0.1,
+      "failed_execution_signal": 0.1,
+      "error_line_depth_ratio": 0.1
+    }
+  }
+}

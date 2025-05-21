@@ -1,0 +1,45 @@
+{
+    "describe": {
+    "provider": "fireworks",
+    "model": "llama4-maverick-instruct-basic",
+    "temperature": 0.8,
+    "top_p": 0.9,
+    "top_k": 80,
+    "max_tokens": 1024,
+    "presence_penalty": 0.6,
+    "frequency_penalty": 0.4,
+    "stop": ["\n\n", "###", "---"]
+    },
+    "mk_msg": {
+    "provider": "fireworks",
+    "model": "llama4-maverick-instruct-basic",
+    "temperature": 0.55,
+    "top_p": 0.8,
+    "top_k": 40,
+    "max_tokens": 512,
+    "presence_penalty": 0.3,
+    "frequency_penalty": 0.2,
+    "stop": ["\n\n", "###", "---"]
+    },
+    "parallel calls": 6,
+    "LLM group size": 5,
+    "Slack group size":10000,
+    "Gmail group size": 10000,
+    "Kakao group size":10000,
+
+
+    "LLM cost": {
+        "model":{
+            "llama4-maverick-instruct-basic": {
+                "In": 0.00000022,
+                "out": 0.00000088
+            },
+            "llama4-scout-instruct-basic": {
+                "In": 0.00000015,
+                "out": 0.0000006
+            }
+
+        }
+    },
+    "debug_mode": "on"
+}

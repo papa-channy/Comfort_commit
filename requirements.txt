@@ -1,0 +1,12 @@
+yaml
+pandas
+tiktoken
+dotenv
+requests
+fastapi
+psycopg2
+bcrypt
+uvicorn[standard]
+jinja2
+binary
+python-multipart
