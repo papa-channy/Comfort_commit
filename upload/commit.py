@@ -7,6 +7,18 @@ from scripts.upload_utils import get_file_path, do_git_commit, send_notification
 from scripts.ext_info import to_safe_filename
 import record.notion as notion
 
+def perform_git_commit(commit_id: int, msg: str):
+    import subprocess
+    from pathlib import Path
+    repo_path = Path("/your/repo/path")  # 수정 필요
+
+    try:
+        subprocess.run(["git", "add", "."], cwd=repo_path, check=True)
+        subprocess.run(["git", "commit", "-m", msg], cwd=repo_path, check=True)
+        subprocess.run(["git", "push"], cwd=repo_path, check=True)
+    except Exception as e:
+        print(f"[Git] Commit 실패: {e}")
+
 def upload_main():
     timestamp = cfg.get_timestamp()  # ✅ 고정값 사용
     log_file = cfg.init_log_file(timestamp)

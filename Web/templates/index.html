@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>나를 위한 AI 워크스페이스</title>
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>나를 위한 AI 워크스페이스</h1>
-    <p>모든 프로젝트를 하나의 공간에서</p>
-    <a href="/signup" class="btn primary">무료로 사용하기</a>
-    <a href="/login" class="btn">로그인</a>
+<h2>대시보드</h2>
+{% for c in commits %}
+  <div>
+    <strong>{{ c.file_path }}</strong><br/>
+    <p>{{ c.commit_msg }}</p>
+    <a href="/review/{{ c.id }}">검토 및 수정</a>
   </div>
-</body>
-</html>
+{% endfor %}

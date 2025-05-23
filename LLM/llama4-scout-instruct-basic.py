@@ -48,3 +48,4 @@ def call(prompt: str, llm_param: dict) -> str:
         # 로그 출력이 필요한 경우
         log(f"[FIREWORKS] LLM 호출 실패: {e}", level="ERROR", source="llama4_scout")
         raise RuntimeError(f"[FIREWORKS] 호출 실패: {e}")
+ 

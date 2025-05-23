@@ -1,12 +1,51 @@
-yaml
-pandas
-tiktoken
-dotenv
-requests
-fastapi
-psycopg2
-bcrypt
-uvicorn[standard]
-jinja2
-binary
-python-multipart
+# ----------- 기본 유틸리티 ----------- 
+pandas==2.2.3
+python-dotenv==1.0.1
+psycopg2==2.9.10
+binary==1.0.1
+
+# ----------- Web Framework ----------- 
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+
+# ----------- HTML 템플릿 (Jinja2) ----------- 
+jinja2==3.1.6
+python-multipart==0.0.20
+
+# ----------- 인증 및 보안 ----------- 
+passlib[bcrypt]==1.7.4
+bcrypt==4.3.0
+python-jose[cryptography]==3.4.0
+itsdangerous==2.2.0
+
+# ----------- OAuth 연동용 ----------- 
+authlib==1.5.2
+
+# ----------- 데이터베이스 연동 ----------- 
+sqlalchemy==2.0.41
+asyncpg==0.29.0
+databases==0.8.0
+
+# ----------- 유틸리티 / 시간 / 경로 / 파서 ----------- 
+pydantic==2.7.1
+pydantic-settings==2.2.1
+email-validator==2.1.0.post1
+pyyaml==6.0.1
+tiktoken==0.6.0
+
+# ----------- 알림 연동용 (Slack/Gmail/Kakao 등) ----------- 
+httpx==0.27.0
+requests==2.31.0
+smtplib3==1.0.3
+aiofiles==23.2.1
+
+# ----------- 캐싱 / 배포 / 보안 ----------- 
+redis==5.0.4
+aiohttp==3.9.3
+gunicorn==22.0.0
+
+# ----------- 개발 및 테스트 환경 (선택) ----------- 
+pytest==8.1.1
+httpx[cli]==0.27.0
+black==24.4.0
+isort==5.13.2

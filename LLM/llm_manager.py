@@ -9,6 +9,11 @@ from LLM.llm_router import call_llm
 from LLM.llm_decorator import llm_track
 from utils.log import log
 from utils.path import get_timestamp
+def choose_llm(user_id, requested_model):
+    try:
+        return call_llm_with_fireworks(model=requested_model)
+    except FireworksLimitError:
+        return call_llm_with_openrouter(model="gpt-4o-mini")
 
 class LLMManager:
     def __init__(self, stage: str, df_for_call: pd.DataFrame):
