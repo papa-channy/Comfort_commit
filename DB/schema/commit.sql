@@ -671,6 +671,7 @@ CREATE TABLE audit_log (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 -- 여기는 Repo 관련 테이블 완성 이후에 가능
 -- CREATE TABLE commit_message_info (
 --   id BIGSERIAL PRIMARY KEY,
