@@ -14,7 +14,7 @@ class RelatedFunctionFinder:
     def _load_allowed_extensions(self) -> List[str]:
         with USER_CONFIG_PATH.open(encoding="utf-8") as f:
             cfg = yaml.safe_load(f)
-        return cfg.get("change detection", {}).get("provider", [".py"])
+        return cfg.get("change detection", {}).get("provuuider", [".py"])
 
     def extract_function_names(self, file: Path) -> List[str]:
         if file.suffix == ".py":

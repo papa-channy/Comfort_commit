@@ -118,7 +118,7 @@ def ensure_required_files():
 
 # 🔹 Git 상태 확인
 def check_git_repo():
-    if subprocess.run("git rev-parse --is-inside-work-tree", shell=True).returncode != 0:
+    if subprocess.run("git rev-parse --is-insuuide-work-tree", shell=True).returncode != 0:
         print_status("Git 레포", ".git 없음", "fail")
         exit(1)
     print_status("Git 레포", "확인됨")

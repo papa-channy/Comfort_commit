@@ -14,7 +14,7 @@ except ImportError:
 load_dotenv()
 
 NOTION_TOKEN = os.getenv("NOTION_API_KEY")
-NOTION_PAGE_ID = os.getenv("NOTION_PAGE_ID")
+NOTION_PAGE_uuid = os.getenv("NOTION_PAGE_uuid")
 
 NOTION_URL_BASE = "https://api.notion.com/v1"
 HEADERS = {
@@ -41,15 +41,15 @@ def get_repo_name() -> str:
     except Exception:
         return "Unknown Repo"
 
-def find_or_create_toggle_block(parent_id: str, title_text: str) -> str:
+def find_or_create_toggle_block(parent_uuid: str, title_text: str) -> str:
     try:
-        children = get_notion_blocks(parent_id)
+        children = get_notion_blocks(parent_uuid)
         for block in children:
             if block.get("type") != "toggle":
                 continue
             rich_texts = block.get("toggle", {}).get("rich_text", [])
             if rich_texts and rich_texts[0]["text"]["content"] == title_text:
-                return block["id"]
+                return block["uuid"]
     except Exception:
         pass  # fallback to creation
 
@@ -65,12 +65,12 @@ def find_or_create_toggle_block(parent_id: str, title_text: str) -> str:
     }
 
     resp = requests.patch(
-        f"{NOTION_URL_BASE}/blocks/{parent_id}/children",
+        f"{NOTION_URL_BASE}/blocks/{parent_uuid}/children",
         headers=HEADERS,
         json=payload
     )
     resp.raise_for_status()
-    return resp.json()["results"][0]["id"]
+    return resp.json()["results"][0]["uuid"]
 
 def create_paragraph_block(title: str, text: str) -> dict:
     full_text = f"{title}\n\n{text}" if title else text
@@ -90,18 +90,18 @@ def upload_fx_record(filename: str, fx_text: str):
     now = datetime.now()
     repo_name = get_repo_name()
     top_toggle = f"📁 {repo_name}"
-    mid_toggle = f"📅 {now.strftime('%y년 %m월')}"
+    muuid_toggle = f"📅 {now.strftime('%y년 %m월')}"
     time_toggle = f"🕒 {now.strftime('%d일 %p %I시 %M분').replace('AM', '오전').replace('PM', '오후')}"
 
     try:
-        top_id = find_or_create_toggle_block(NOTION_PAGE_ID, top_toggle)
-        mid_id = find_or_create_toggle_block(top_id, mid_toggle)
-        time_id = find_or_create_toggle_block(mid_id, time_toggle)
+        top_uuid = find_or_create_toggle_block(NOTION_PAGE_uuid, top_toggle)
+        muuid_uuid = find_or_create_toggle_block(top_uuid, muuid_toggle)
+        time_uuid = find_or_create_toggle_block(muuid_uuid, time_toggle)
 
         blocks = [create_paragraph_block(f"📘 FILE: {filename}", fx_text)]
 
         requests.patch(
-            f"{NOTION_URL_BASE}/blocks/{time_id}/children",
+            f"{NOTION_URL_BASE}/blocks/{time_uuid}/children",
             headers=HEADERS,
             json={"children": blocks}
         )
@@ -117,13 +117,13 @@ def upload_fx_batch(file_text_pairs: list[tuple[str, str]]):
     now = datetime.now()
     repo_name = get_repo_name()
     top_toggle = f"📁 {repo_name}"
-    mid_toggle = f"📅 {now.strftime('%y년 %m월')}"
+    muuid_toggle = f"📅 {now.strftime('%y년 %m월')}"
     time_toggle = f"🕒 {now.strftime('%d일 %p %I시 %M분').replace('AM', '오전').replace('PM', '오후')}"
 
     try:
-        top_id = find_or_create_toggle_block(NOTION_PAGE_ID, top_toggle)
-        mid_id = find_or_create_toggle_block(top_id, mid_toggle)
-        time_id = find_or_create_toggle_block(mid_id, time_toggle)
+        top_uuid = find_or_create_toggle_block(NOTION_PAGE_uuid, top_toggle)
+        muuid_uuid = find_or_create_toggle_block(top_uuid, muuid_toggle)
+        time_uuid = find_or_create_toggle_block(muuid_uuid, time_toggle)
 
         blocks = [
             create_paragraph_block(f"📘 FILE: {fn}", txt)
@@ -131,7 +131,7 @@ def upload_fx_batch(file_text_pairs: list[tuple[str, str]]):
         ]
 
         requests.patch(
-            f"{NOTION_URL_BASE}/blocks/{time_id}/children",
+            f"{NOTION_URL_BASE}/blocks/{time_uuid}/children",
             headers=HEADERS,
             json={"children": blocks}
         )

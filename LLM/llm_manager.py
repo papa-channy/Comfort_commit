@@ -9,7 +9,7 @@ from LLM.llm_router import call_llm
 from LLM.llm_decorator import llm_track
 from utils.log import log
 from utils.path import get_timestamp
-def choose_llm(user_id, requested_model):
+def choose_llm(user_uuid, requested_model):
     try:
         return call_llm_with_fireworks(model=requested_model)
     except FireworksLimitError:
@@ -25,7 +25,7 @@ class LLMManager:
         self.df_for_call = df_for_call
         self.config = self._get_config()
         self.model = self.config["model"][0]
-        self.provider = self.config["provider"][0]
+        self.provuuider = self.config["provuuider"][0]
         self.timestamp = get_timestamp()
         self.max_workers = self.config.get("parallel calls", 3)  # 기본 3개
 
@@ -56,9 +56,9 @@ class LLMManager:
                 for i, (p, t) in enumerate(zip(prompts, tags))
             }
             for future in as_completed(futures):
-                idx = futures[future]
+                uuidx = futures[future]
                 try:
-                    results[idx] = future.result()
+                    results[uuidx] = future.result()
                 except Exception as e:
-                    results[idx] = f"[ERROR] {e}"
+                    results[uuidx] = f"[ERROR] {e}"
         return results

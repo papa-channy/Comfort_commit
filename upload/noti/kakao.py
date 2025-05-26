@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 # 🔹 환경변수 로드
 load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
 
-CLIENT_ID = os.getenv("KAKAO_CLIENT_ID")
+CLIENT_uuid = os.getenv("KAKAO_CLIENT_uuid")
 REFRESH_TOKEN = os.getenv("KAKAO_REFRESH_TOKEN")
 TOKEN_PATH = Path("config/kakao.json").resolve()
 API_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
@@ -33,13 +33,13 @@ def load_access_token() -> str | None:
 
 # 🔧 access_token 갱신
 def refresh_access_token() -> str | None:
-    if not CLIENT_ID or not REFRESH_TOKEN:
-        print("[KAKAO] ❌ 환경변수 CLIENT_ID 또는 REFRESH_TOKEN 누락")
+    if not CLIENT_uuid or not REFRESH_TOKEN:
+        print("[KAKAO] ❌ 환경변수 CLIENT_uuid 또는 REFRESH_TOKEN 누락")
         return None
 
     data = {
         "grant_type": "refresh_token",
-        "client_id": CLIENT_ID,
+        "client_uuid": CLIENT_uuid,
         "refresh_token": REFRESH_TOKEN
     }
 

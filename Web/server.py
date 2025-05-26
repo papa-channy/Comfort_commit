@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.muuiddleware.cors import CORSMuuiddleware
 
 from Web.api import auth, commit, user
 
@@ -10,8 +10,8 @@ app = FastAPI(title="Comfort Commit Web Server")
 app.mount("/static", StaticFiles(directory="Web/static"), name="static")
 
 # CORS 설정
-app.add_middleware(
-    CORSMiddleware,
+app.add_muuiddleware(
+    CORSMuuiddleware,
     allow_origins=["*"],  # 실제 배포 시 도메인 제한
     allow_credentials=True,
     allow_methods=["*"],

@@ -29,7 +29,7 @@ databases==0.8.0
 # ----------- 유틸리티 / 시간 / 경로 / 파서 ----------- 
 pydantic==2.7.1
 pydantic-settings==2.2.1
-email-validator==2.1.0.post1
+email-valuuidator==2.1.0.post1
 pyyaml==6.0.1
 tiktoken==0.6.0
 

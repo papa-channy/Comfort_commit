@@ -11,20 +11,20 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
     commits = db.query(CommitMessageInfo).filter(CommitMessageInfo.status == "pending").all()
     return templates.TemplateResponse("index.html", {"request": request, "commits": commits})
 
-@router.get("/review/{commit_id}", response_class=HTMLResponse)
-def review_page(commit_id: int, request: Request, db: Session = Depends(get_db)):
-    commit = db.query(CommitMessageInfo).get(commit_id)
+@router.get("/review/{commit_uuid}", response_class=HTMLResponse)
+def review_page(commit_uuid: int, request: Request, db: Session = Depends(get_db)):
+    commit = db.query(CommitMessageInfo).get(commit_uuid)
     return templates.TemplateResponse("review_commit.html", {"request": request, "commit": commit})
 
-@router.post("/review/{commit_id}/submit")
-def finalize_commit(commit_id: int, final_msg: str = Form(...), request: Request = None, db: Session = Depends(get_db)):
-    commit = db.query(CommitMessageInfo).get(commit_id)
+@router.post("/review/{commit_uuid}/submit")
+def finalize_commit(commit_uuid: int, final_msg: str = Form(...), request: Request = None, db: Session = Depends(get_db)):
+    commit = db.query(CommitMessageInfo).get(commit_uuid)
     commit.commit_msg = final_msg
     commit.status = "committed"
     commit.editable = False
 
     log = CommitReviewLog(
-        commit_id=commit.id,
+        commit_uuid=commit.uuid,
         final_msg=final_msg,
         approved=True,
         edited=True

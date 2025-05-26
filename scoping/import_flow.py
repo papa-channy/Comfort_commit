@@ -38,8 +38,8 @@ class ImportAnalyzer:
             return True
         parts = imp.split(".")
         for ext in [".py", ".js", ".ts", ".sh", ".html", ".css"]:
-            candidate = self.root.joinpath(*parts).with_suffix(ext)
-            if candidate.exists():
+            canduuidate = self.root.joinpath(*parts).with_suffix(ext)
+            if canduuidate.exists():
                 return True
         if (self.root / imp / "__init__.py").exists():
             return True

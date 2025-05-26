@@ -98,7 +98,7 @@ def clustering_main(df: pd.DataFrame, repo: str = "default") -> pd.DataFrame:
         grouped_fx = chunk_selected_fx(selected_fx_group, split_count)
         updated_rows.append({
             "file": str(file_path),
-            "uuid": row.get("uuid", "N/A"),
+            "id": row.get("id", "N/A"),
             "selected_fx": selected_fx_group,
             "split_group": split_count,
             "fx_grouped": grouped_fx
@@ -112,5 +112,5 @@ if __name__ == "__main__":
     if not df.empty:
         final_df = clustering_main(df)
         pd.set_option("display.max_columns", None)
-        pd.set_option("display.width", 160)
+        pd.set_option("display.wuuidth", 160)
         print(final_df)

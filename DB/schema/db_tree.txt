@@ -1,0 +1,241 @@
+`|-- config
+    |-- conf.json
+    |-- user_config.yml
+|-- DB
+    |-- cache
+        |-- dynamo_cache.db
+        |-- parse.db
+    |-- schema
+        |-- 01_user
+            |-- 01_user_info.sql
+            |-- 02_user_oauth.sql
+            |-- 03_user_session.sql
+            |-- 04_user_noti_pref.sql
+            |-- 05_user_noti_stat.sql
+            |-- 06_user_device_profile.sql
+            |-- 07_user_secret.sql
+            |-- 08_user_feedback_log.sql
+            |-- 09_user_action_log.sql
+            |-- 10_user_deletion_request.sql
+        |-- 02_llm
+            |-- 01_key_config.sql
+            |-- 02_request_log.sql
+        |-- 03_plan_reward
+            |-- 01_plan.sql
+            |-- 02_plan_history.sql
+            |-- 03_reward_log.sql
+        |-- 04_repo
+            |-- 01_repo_main
+                |-- 01_repo.sql
+                |-- 02_repo_connections.sql
+                |-- 03_repo_access_permissions.sql
+            |-- 02_code_snapshots
+                |-- 01_code_snapshots.sql
+                |-- 02_directory_structures.sql
+                |-- 03_file_diff_fragments.sql
+            |-- 03_files
+                |-- 01_file_uuidentities.sql
+                |-- 02_snapshot_file_instances.sql
+                |-- 03_file_analysis_metrics.sql
+            |-- 04_code_elements
+                |-- 01_code_element_uuidentities.sql
+                |-- 02_snapshot_code_element_instances.sql
+                |-- 03_code_element_relations.sql
+                |-- 04_code_element_embeddings.sql
+            |-- 05_commit_generation
+                |-- 01_commit_generation_requests.sql
+                |-- 02_generated_commit_contents.sql
+                |-- 03_finalized_commits.sql
+                |-- 04_scoping_results.sql
+                |-- 05_generated_tech_description.sql
+                |-- 06_llm_input_context_details.sql
+            |-- 00_repo_enums_and_types.sql
+        |-- 05_customization_and_rules
+        |-- 06_org_and_team
+        |-- 07_integration_and_linking
+        |-- 08_analytics_and_testing
+        |-- 09_noti
+        |-- 00_common_fx_and_types.sql
+        |-- DB_structure.txt
+        |-- repo.sql
+|-- LLM
+    |-- llama4-maverick-instruct-basic.py
+    |-- llama4-scout-instruct-basic.py
+    |-- llm_decorator.py
+    |-- llm_manager.py
+    |-- llm_router.py
+|-- log
+    |-- llm_call.jsonl
+|-- prep
+    |-- describe_prompt.py
+    |-- diff.py
+    |-- dir_structure.py
+    |-- latest_commit.py
+    |-- msg_prompt.py
+    |-- summary_readme.py
+|-- scoping
+    |-- clustering.py
+    |-- conv_df.py
+    |-- extract_rel_fx.py
+    |-- extract_select_features.py
+    |-- feature.json
+    |-- import_flow.py
+    |-- listup.py
+    |-- weight.json
+|-- temp
+    |-- describe.pkl
+    |-- mk_msg.pkl
+|-- template
+    |-- en
+        |-- doc_writing.txt
+        |-- internal.txt
+        |-- internal_detail.txt
+        |-- solo_detail.txt
+        |-- team_proj.txt
+    |-- ko
+        |-- doc_writing.txt
+        |-- internal.txt
+        |-- internal_detail.txt
+        |-- solo_detail.txt
+        |-- team_proj.txt
+|-- test
+    |-- check_err.py
+|-- upload
+    |-- archive
+        |-- notion.py
+        |-- slack.py
+    |-- noti
+        |-- discord.py
+        |-- gmail.py
+        |-- kakao.py
+        |-- slack.py
+    |-- commit.py
+    |-- upload.py
+    |-- upload_utils.py
+|-- utils
+    |-- calc_cost.py
+    |-- ex_rate.txt
+    |-- log.py
+    |-- path.py
+    |-- privacy.txt
+    |-- structure.txt
+|-- Web
+    |-- api
+        |-- auth.py
+        |-- commit.py
+        |-- feedback.py
+        |-- plan.py
+        |-- user.py
+    |-- exceptions
+        |-- auth_exceptions.py
+    |-- models
+        |-- activity_model.py
+        |-- auth_model.py
+        |-- billing_model.py
+        |-- commit_model.py
+        |-- llm_model.py
+        |-- notification_model.py
+        |-- __init__.py
+    |-- schemas
+        |-- auth_schema.py
+        |-- commit_schema.py
+        |-- feedback_schema.py
+        |-- plan_schema.py
+        |-- user_schema.py
+    |-- services
+        |-- auth_service.py
+        |-- commit_services.py
+        |-- log_services.py
+        |-- plan_services.py
+        |-- security.py
+    |-- templates
+        |-- dashboard.html
+        |-- index.html
+        |-- login.html
+        |-- plan.html
+        |-- review_commit.html
+        |-- signup.html
+    |-- config.py
+    |-- db.py
+    |-- server.py
+    |-- __init__.py
+|-- .env.example
+|-- .gitignore
+|-- Comfort Commit 투자 제안서.md
+|-- LICENSE
+|-- README.md
+|-- requirements.txt
+|-- run_all.py
+
+
+
+
+DB/
+└── schema/
+    ├── 00_common_functions_and_types.sql
+    ├── 01_user_module/
+    │   ├── 01_user_info.sql
+    │   ├── 02_user_oauth.sql
+    │   ├── 03_user_session.sql
+    │   ├── 04_user_notification_pref.sql
+    │   ├── 05_user_noti_stat.sql
+    │   ├── 06_user_device_profile.sql
+    │   ├── 07_user_secret.sql
+    │   ├── 08_user_feedback_log.sql
+    │   ├── 09_user_action_log.sql
+    │   └── 10_user_deletion_request.sql
+    ├── 02_llm_module/
+    │   ├── 01_llm_key_config.sql
+    │   └── 02_llm_request_log.sql
+    ├── 03_plan_and_reward_module/
+    │   ├── 01_user_plan.sql
+    │   ├── 02_user_plan_history.sql
+    │   └── 03_user_reward_log.sql
+    ├── 04_repo_module/
+    │   ├── 00_repo_enums_and_types.sql (이 모듈 내 공통 ENUM 타입용)
+    │   ├── 01_repositories/
+    │   │   ├── 01_repositories.sql (원본: 1. repositories)
+    │   │   ├── 02_repository_connections.sql (원본: 2. repository_connections)
+    │   │   └── 03_repository_access_permissions.sql (원본: 3. repository_access_permissions)
+    │   ├── 02_code_snapshots/
+    │   │   ├── 01_code_snapshots.sql (원본: 4. code_snapshots)
+    │   │   └── 02_directory_structures.sql (원본: 5. directory_structures)
+    │   ├── 03_files/
+    │   │   ├── 01_file_uuidentities.sql (원본: 6. file_uuidentities)
+    │   │   ├── 02_snapshot_file_instances.sql (원본: 7. snapshot_file_instances)
+    │   │   └── 03_file_analysis_metrics.sql (원본: 8. file_analysis_metrics)
+    │   ├── 04_code_elements/
+    │   │   ├── 01_code_element_uuidentities.sql (원본: 9. code_element_uuidentities)
+    │   │   ├── 02_snapshot_code_element_instances.sql (원본: 10. snapshot_code_element_instances)
+    │   │   ├── 03_code_element_relations.sql (원본: 11. code_element_relations)
+    │   │   └── 04_code_element_embeddings.sql (원본: 12. code_element_embeddings)
+    │   └── 05_commit_generation/
+    │       ├── 01_commit_generation_requests.sql (원본: 13. commit_generation_requests)
+    │       ├── 02_generated_commit_contents.sql (원본: 14. generated_commit_contents)
+    │       └── 03_finalized_commits.sql (원본: 15. finalized_commits)
+    ├── 05_customization_and_rules_module/
+    │   ├── 00_customization_enums_and_types.sql
+    │   ├── 01_analysis_rule_configs.sql (원본: 17. analysis_rule_configs)
+    │   ├── 02_user_defined_commit_rules.sql (원본: 18. user_defined_commit_rules)
+    │   ├── 03_user_defined_commit_rule_conditions.sql (원본: 18a. user_defined_commit_rule_conditions)
+    │   ├── 04_user_defined_commit_rule_actions.sql (원본: 18b. user_defined_commit_rule_actions)
+    │   └── 05_analysis_ignore_patterns.sql (원본: 19. analysis_ignore_patterns)
+    ├── 06_organization_and_team_module/
+    │   ├── 00_org_enums_and_types.sql
+    │   ├── 01_organizations.sql (원본: 20. organizations)
+    │   ├── 02_teams.sql (원본: 21. teams)
+    │   ├── 03_team_memberships.sql (원본: 22. team_memberships)
+    │   └── 04_team_repository_access.sql (원본: 23. team_repository_access)
+    ├── 07_integration_and_linking_module/
+    │   ├── 00_integration_enums_and_types.sql - 01에 그냥 통합
+    │   └── 01_external_entity_links.sql (원본: 24. external_entity_links)
+    ├── 08_analytics_and_testing_module/
+    │   ├── 00_analytics_enums_and_types.sql
+    │   ├── 01_feature_usage_logs.sql (원본: 25. feature_usage_logs)
+    │   ├── 02_ab_tests_master.sql (원본: 26. ab_tests_master)
+    │   ├── 03_ab_test_variants.sql (원본: 27. ab_test_variants)
+    │   ├── 04_ab_test_user_assignments.sql (원본: 28. ab_test_user_assignments)
+    │   └── 05_ab_test_event_metrics.sql (원본: 29. ab_test_event_metrics)
+    └── 09_notification_delivery_module/
+        ├── 00_notification_enums_and_types.sql - 이것도 01로 통합
+        └── 01_notification_delivery_logs.sql (원본: 30. notification_delivery_logs)

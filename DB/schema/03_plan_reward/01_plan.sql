@@ -4,32 +4,17 @@
 -- 설명: 사용자의 현재 요금제 정보, 관련 사용량 한도, 기능 접근 권한 등을 관리합니다.
 -- 대상 DB: PostgreSQL Primary RDB (사용자 구독 및 권한 데이터)
 -- 파티셔닝: 없음 (사용자당 1개의 로우)
--- MVP 중점사항: 핵심 요금제 정보, ENUM 타입 사용, 기능 플래그 명시적 컬럼 유지, 필수 인덱스, 이력 기록 트리거.
+-- MVP 중점사항: 핵심 요금제 정보, 공통 ENUM 타입 참조, 기능 플래그 명시적 컬럼 유지, 필수 인덱스, 이력 기록 트리거.
 -- 스케일업 고려사항: RLS 적용, 기능 플래그 JSONB로 전환 또는 별도 매핑 테이블 사용, plan_catalog 마스터 테이블과의 연동 강화, 동적 요금제 확장을 위한 Lookup Table 전환, 데이터 보관 정책 자동화 연동.
 -- =====================================================================================
 
--- 요금제 키 ENUM 타입 정의
--- (향후 00_common_functions_and_types.sql 파일로 통합 예정)
-CREATE TYPE plan_key_enum AS ENUM (
-    'free',
-    'basic_monthly',
-    'premium_monthly',
-    'basic_annual',
-    'premium_annual',
-    'team_basic_monthly',
-    'team_premium_monthly',
-    'enterprise_custom',
-    'trial_premium' -- 예시: 프리미엄 기능 체험판
-);
-COMMENT ON TYPE plan_key_enum IS '시스템에서 제공하는 요금제의 내부 식별 키 값들의 집합입니다.';
-
 -- 사용자 요금제 정보 테이블
 CREATE TABLE user_plan (
-  uuid UUID PRIMARY KEY REFERENCES user_info(uuid) ON DELETE CASCADE,
-  -- user_info 테이블의 uuid를 참조하며, 사용자 탈퇴 시 관련 요금제 정보도 함께 삭제됩니다.
+  id id PRIMARY KEY REFERENCES user_info(id) ON DELETE CASCADE,
+  -- user_info 테이블의 id를 참조하며, 사용자 탈퇴 시 관련 요금제 정보도 함께 삭제됩니다.
 
   -- 🧾 요금제 구분
-  plan_key plan_key_enum NOT NULL DEFAULT 'free',          -- 시스템 내부 요금제 식별 키 (ENUM 타입 적용)
+  plan_key plan_key_enum NOT NULL DEFAULT 'free',          -- 시스템 내부 요금제 식별 키 (00_common_functions_and_types.sql 정의된 ENUM 타입 적용)
   plan_label TEXT,                                        -- UI 등에 표시될 사용자를 위한 요금제 이름 (예: '개인 베이직 (월간)', '팀 프리미엄'). plan_catalog 테이블에서 관리될 수 있음.
 
   -- 📊 사용량 한도 (이 테이블은 "한도"만 정의, 실제 사용량은 로그 테이블 집계 또는 Redis 카운터 등으로 판단)
@@ -80,18 +65,42 @@ CREATE TABLE user_plan (
 );
 
 COMMENT ON TABLE user_plan IS '사용자의 현재 요금제 및 관련 사용량 한도, 기능 접근 권한 등을 저장합니다.';
-COMMENT ON COLUMN user_plan.uuid IS 'user_info 테이블의 사용자 UUID를 참조하는 기본 키입니다.';
-COMMENT ON COLUMN user_plan.plan_key IS '시스템 내부에서 사용되는 요금제의 고유 식별 키입니다 (ENUM 타입). 실제 정책은 plan_catalog 테이블 또는 설정 파일에서 관리될 수 있습니다.';
+COMMENT ON COLUMN user_plan.id IS 'user_info 테이블의 사용자 id를 참조하는 기본 키입니다.';
+COMMENT ON COLUMN user_plan.plan_key IS '시스템 내부에서 사용되는 요금제의 고유 식별 키입니다 (00_common_functions_and_types.sql 정의된 plan_key_enum 타입). 실제 정책은 plan_catalog 테이블 또는 설정 파일에서 관리될 수 있습니다.';
+COMMENT ON COLUMN user_plan.plan_label IS 'UI 등에 표시될 사용자를 위한 요금제의 이름입니다. (예: ''개인 베이직 (월간)'', ''팀 프리미엄''). 이 값은 plan_catalog 마스터 테이블과 동기화되거나, 거기서 직접 조회될 수 있습니다.';
+COMMENT ON COLUMN user_plan.max_commits_per_day IS '하루에 허용되는 Comfort Commit 기능 사용 최대 횟수입니다.';
+COMMENT ON COLUMN user_plan.max_commits_per_month IS '한 달 동안 허용되는 Comfort Commit 기능 사용 최대 횟수입니다.';
 COMMENT ON COLUMN user_plan.max_llm_requests_per_day IS '하루에 허용되는 LLM API 총 요청 횟수 한도입니다. 초과 시 제한 또는 추가 과금이 발생할 수 있습니다.';
+COMMENT ON COLUMN user_plan.max_analyzed_repos IS 'Comfort Commit 서비스에 동시에 연동하여 분석을 활성화할 수 있는 최대 저장소 개수입니다.';
+COMMENT ON COLUMN user_plan.allowed_notification_channels IS '사용자가 이 요금제에서 알림을 수신할 수 있도록 허용된 채널 목록입니다 (예: email, slack).';
+COMMENT ON COLUMN user_plan.notification_credits_monthly IS '특정 유료 알림 채널(예: SMS) 사용을 위해 매월 제공되는 크레딧 양입니다. 0인 경우 무제한 또는 해당 채널 사용 불가일 수 있습니다.';
+COMMENT ON COLUMN user_plan.slack_integration_enabled IS 'Slack과의 연동 기능(알림 수신, 명령어 사용 등)이 이 요금제에서 활성화되어 있는지 여부입니다.';
+COMMENT ON COLUMN user_plan.ad_display_enabled IS '서비스 내에 광고가 노출될 수 있는지 여부입니다. 주로 무료 요금제에 해당됩니다.';
+COMMENT ON COLUMN user_plan.priority_support_enabled IS '문제 발생 시 우선적인 고객 지원을 받을 수 있는 권한 여부입니다.';
+COMMENT ON COLUMN user_plan.commit_history_retention_months IS 'Comfort Commit을 통해 생성되거나 관리된 커밋 관련 데이터(메타데이터, 분석 결과 등)의 보존 기간(개월 수)입니다.';
+COMMENT ON COLUMN user_plan.data_export_enabled IS '사용자가 자신의 데이터(커밋 이력, 분석 결과 등)를 외부로 내보낼 수 있는 기능의 활성화 여부입니다.';
+COMMENT ON COLUMN user_plan.advanced_analytics_access IS '고급 분석 기능이나 상세 리포트에 접근할 수 있는 권한 여부입니다.';
+COMMENT ON COLUMN user_plan.allowed_llm_models IS '이 요금제의 사용자가 Comfort Commit 기능 수행 시 선택하거나 시스템이 배정할 수 있는 LLM 모델들의 목록입니다.';
+COMMENT ON COLUMN user_plan.custom_prompt_enabled IS '사용자가 LLM 호출 시 기본 프롬프트 외에 자신만의 커스텀 프롬프트를 사용할 수 있는지 여부입니다.';
+COMMENT ON COLUMN user_plan.analysis_depth_level IS '코드 분석 시 적용될 분석의 깊이 또는 상세 수준입니다 (예: standard, deep).';
 COMMENT ON COLUMN user_plan.pii_data_retention_days IS '개인 식별 정보 포함 가능성이 있는 데이터(예: LLM 로그 원문)의 보존 기간(일)입니다. 이 기간 이후에는 마스킹, 삭제 또는 익명화 처리됩니다.';
+COMMENT ON COLUMN user_plan.max_team_members IS '팀 또는 조직 요금제의 경우, 해당 요금제에 포함될 수 있는 최대 사용자(팀 멤버) 수입니다.';
+COMMENT ON COLUMN user_plan.team_shared_dashboard_enabled IS '팀 멤버 간 공유 가능한 대시보드 기능의 활성화 여부입니다.';
+COMMENT ON COLUMN user_plan.monthly_price_usd IS '해당 요금제의 월간 구독 비용 (USD 기준)입니다.';
+COMMENT ON COLUMN user_plan.annual_price_usd IS '해당 요금제의 연간 구독 비용 (USD 기준)입니다. 월간 대비 할인율이 적용될 수 있습니다.';
+COMMENT ON COLUMN user_plan.trial_duration_days IS '유료 요금제에 대해 제공되는 무료 체험 기간(일 수)입니다. 0이면 체험판이 없음을 의미합니다.';
 COMMENT ON COLUMN user_plan.subscription_status IS '현재 사용자의 구독 상태를 나타냅니다 (예: active, trialing, cancelled). 스케일업 시 ENUM 타입 사용을 고려합니다.';
+COMMENT ON COLUMN user_plan.is_trial_active IS '사용자가 현재 무료 체험판을 사용 중인지 여부입니다.';
+COMMENT ON COLUMN user_plan.current_period_started_at IS '현재의 구독 또는 체험 기간이 시작된 시각입니다.';
 COMMENT ON COLUMN user_plan.current_period_ends_at IS '현재 구독 또는 체험 기간이 종료되는 시각으로, 다음 결제 또는 상태 변경의 기준이 됩니다.';
+COMMENT ON COLUMN user_plan.cancelled_at IS '사용자가 구독을 취소한 경우, 그 취소 요청이 처리된 시각입니다.';
+COMMENT ON COLUMN user_plan.grace_period_ends_at IS '결제 실패 또는 구독 만료 후에도 서비스가 일정 기간 유지되는 유예 기간의 종료 시각입니다.';
 COMMENT ON COLUMN user_plan.updated_at IS '이 사용자 요금제 정보가 마지막으로 변경된 시각입니다.';
 
 -- user_plan 테이블 인덱스
-CREATE INDEX idx_user_plan_uuid_plan_key ON user_plan(uuid, plan_key); -- 특정 사용자의 특정 요금제 정보 빠르게 접근
-CREATE INDEX idx_user_plan_expiry ON user_plan(current_period_ends_at); -- 구독 만료 예정 사용자 조회
-CREATE INDEX idx_user_plan_status ON user_plan(subscription_status); -- 특정 구독 상태의 사용자 필터링
+CREATE INDEX uuidx_user_plan_id_plan_key ON user_plan(id, plan_key); -- 특정 사용자의 특정 요금제 정보 빠르게 접근
+CREATE INDEX uuidx_user_plan_expiry ON user_plan(current_period_ends_at); -- 구독 만료 예정 사용자 조회
+CREATE INDEX uuidx_user_plan_status ON user_plan(subscription_status); -- 특정 구독 상태의 사용자 필터링
 
 -- updated_at 컬럼 자동 갱신 트리거
 -- (참고: set_updated_at() 함수는 '00_common_functions_and_types.sql' 파일에 최종적으로 통합 정의될 예정)
@@ -100,13 +109,14 @@ BEFORE UPDATE ON user_plan
 FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 -- 요금제 변경(plan_key) 시 user_plan_history 테이블에 이력 자동 기록 트리거
--- (참고: insert_user_plan_history() 함수는 '00_common_functions_and_types.sql' 파일에 최종적으로 통합 정의될 예정이며,
---  user_plan_history 테이블의 최종 컬럼 구조 및 plan_catalog 와의 연동을 고려하여 함수 내용 조정 필요)
+-- (참고: insert_user_plan_history_trigger_function() 함수는 '00_common_functions_and_types.sql' 파일에 정의)
 CREATE TRIGGER trg_log_user_plan_change
 AFTER UPDATE OF plan_key ON user_plan
 FOR EACH ROW
 WHEN (OLD.plan_key IS DISTINCT FROM NEW.plan_key) -- plan_key가 실제로 변경되었을 때만 실행
-EXECUTE FUNCTION insert_user_plan_history();
+EXECUTE FUNCTION insert_user_plan_history_trigger_function();
 
 -- 스케일업 고려사항 주석:
--- COMMENT ON TABLE user_plan IS '(스케일업 시: 다수의 기능 플래그(예: slack_integration_enabled, data_export_enabled 등)는 plan_features JSONB 형태로 통합 관리하거나, plan_feature_matrix(plan_key, feature_key, value)와 같은 별도 매핑 테이블로 분리하여 유연성 및 확장성 확보 고려. 또한, plan_label 및 가격 정보 등은 plan_catalog 마스터 테이블에서 조회하여 중복 최소화)';
+-- COMMENT ON TABLE user_plan IS '(스케일업 시: 다수의 기능 플래그(예: slack_integration_enabled, data_export_enabled 등)는 
+-- plan_features JSONB 형태로 통합 관리하거나, plan_feature_matrix(plan_key, feature_key, value)와 같은 별도 매핑 테이블로 분리하여 유연성 및 확장성 확보 고려. 
+-- 또한, plan_label 및 가격 정보 등은 plan_catalog 마스터 테이블에서 조회하여 중복 최소화)';

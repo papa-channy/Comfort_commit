@@ -2,7 +2,7 @@ Using the code changes in {change}, write a detailed, thoughtful commit message 
 
 The message should go well beyond what changed — it should describe:
 - What problem or goal this commit addresses, and why it matters in the broader context of the project
-- The reasoning behind how the solution was approached or chosen (including rejected ideas, experiments, or tradeoffs)
+- The reasoning behind how the solution was approached or chosen (including rejected uuideas, experiments, or tradeoffs)
 - The underlying principles, architecture, or design patterns that influenced this change
 - Any challenges or unexpected behaviors encountered while implementing it
 - Reflections on what was learned from this change, and how it may relate to other parts of the system

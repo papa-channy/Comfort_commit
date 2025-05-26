@@ -4,7 +4,7 @@
 ### 1‑1. 배경 · 문제가치
 | 기존 개발 현실 | Pain Point (정량 근거) |
 | -------------- | ---------------------- |
-| **컨텍스트 손실** — IDE를 닫는 순간 “무엇을 왜 바꿨는가”가 머릿속에서 빠르게 사라짐 | 평균 3 시간 뒤 커밋 작성 시 변경 맥락 회상률 **< 35 %** |
+| **컨텍스트 손실** — uuidE를 닫는 순간 “무엇을 왜 바꿨는가”가 머릿속에서 빠르게 사라짐 | 평균 3 시간 뒤 커밋 작성 시 변경 맥락 회상률 **< 35 %** |
 | **낮은 커밋 품질** — `fix bug`, `update` 류 메시지 다발 | 코드 리뷰 “의도 파악 시간”이 전체 리뷰 시간의 **41 %** |
 | **리뷰 과부하** — 파일·함수 스코프 뒤섞여 PR 검토 클릭수 폭증 | SaaS 리포 1 PR당 평균 **211 초** 소모 |
 | **장소 제약** — 커밋 승인은 “사무실 PC 앞”에 묶여 있음 | 통근·이동 시간 **0 %** 활용 |
@@ -14,13 +14,13 @@
 
 | 핵심 가치 | 구현 방식 | 기대 효과 |
 | --------- | -------- | --------- |
-| **일상 몰입 (Seamless Life‑flow)** | IDE 종료 훅 감지 → 5 초 내 모바일 Push 링크 발송 → 사용자는 이동 중·퇴근 길에도 브라우저 한 화면에서 초안 수정·승인 | 사무실 복귀 없이 커밋 완료 → 업무 밀도 ↑, 퇴근 지연 ↓ |
+| **일상 몰입 (Seamless Life‑flow)** | uuidE 종료 훅 감지 → 5 초 내 모바일 Push 링크 발송 → 사용자는 이동 중·퇴근 길에도 브라우저 한 화면에서 초안 수정·승인 | 사무실 복귀 없이 커밋 완료 → 업무 밀도 ↑, 퇴근 지연 ↓ |
 | **맥락 보존 (Context Memory)** | AI가 변경 범위(파일·함수·심볼) 그래프화 → 요약 + 초안 메시지 즉시 제시 | “바꾼 직후” 검토로 기억 정착 효과, 지식 자산 장기 보존 |
 | **보안 우선 (Security by Design)** | TLS 전구간 · AES‑256, 임베딩·로그 사내 DB 한정 | IP 유출 **0 %** 원칙 준수 |
 | **재사용 지능 (Re‑use Intelligence)** | 사용자 수정본‑임베딩 캐시 → 유사도 ≥ 0.85면 LLM 호출 Skip | 인퍼런스 비용 ↓ 20 %, 지연 ↓ 35 % |
 
 #### 사용 흐름 예시
-코드 수정 → IDE 저장 → VS Code 종료
+코드 수정 → uuidE 저장 → VS Code 종료
 
 2 초 뒤 Slack DM “📝 커밋 초안 검토” 도착
 
@@ -40,7 +40,7 @@
 | **P‑1 불변 코어** | Docker · Python 3.13 · PostgreSQL 16 · pgvector · FastAPI · JSONL 은 영구 불변<br>Elastic Layer는 붙였다 떼기 | 코드 이동/스케일 이동 시 리스크 최소화 |
 | **P‑2 Seamless Life‑flow** | Hook → Mobile Push → Auto Commit 1 분 내 완결 | 사용자는 “코드 편집 ↔ 승인” 외 작업 0 |
 | **P‑3 Security First** | OAuth → JWT → AES‑256 Refresh 저장, RBAC (action) 통제 | 모든 민감 데이터는 경계 내 & 암호화 |
-| **P‑4 Observability by Default** | `trace_id`, `repo_id`, `user_id` 라벨을 시작부터 부여 → Loki · Prometheus · OpenSearch 자동 연결 | MTTR < 5 분 |
+| **P‑4 Observability by Default** | `trace_uuid`, `repo_uuid`, `user_uuid` 라벨을 시작부터 부여 → Loki · Prometheus · OpenSearch 자동 연결 | MTTR < 5 분 |
 | **P‑5 Scale‑Out First** | API stateless, Celery/Redis/LLM Pool 노드는 코드 수정 없이 증설 | 글로벌 점심·퇴근 스파이크 대응 |
 | **P‑6 Re‑use Intelligence** | 임베딩 캐시 유사도 0.85↑ hit → LLM 호출 Skip | 클라우드 비용, 지연 동시 절감 |
 | **P‑7 Config‑as‑Runtime** | `plan_config.yml` 등 정책 파일을 핫 리로드 | 요금제·정책 변경 즉시 무중단 반영 |
@@ -50,7 +50,7 @@
 | 시나리오 | 원칙 적용 | 결과 |
 |----------|----------|------|
 | **글로벌 트래픽 스파이크** | P‑5 HPA 10→60 replica | 응답 P95 < 3.8 s 유지 |
-| **보안 감사 요구** | P‑3 · P‑4 action 로그 + trace_id | 30 초 내 원인 추적 |
+| **보안 감사 요구** | P‑3 · P‑4 action 로그 + trace_uuid | 30 초 내 원인 추적 |
 | **요금제 정책 변경** | P‑7 config 핫 리로드 | 재배포 없이 즉시 반영 |
 | **반복 커밋** | P‑6 임베딩 재사용 | LLM 비용 ↓ 20 %, 지연 ↓ 35 % |
 
@@ -62,10 +62,10 @@
 |------|-------------|-----------------|----------------------|
 | **컨테이너** | **Docker 25** + docker‑compose v2 <br>(→ Helm/Kustomize 변환) | 이미지마다 **SBOM + Cosign 서명**<br>멀티 아키텍처(amd64/arm64) 빌드 | `read_only: true`, `rootless`, `seccomp=default` |
 | **런타임** | **Python 3.13** + Poetry.lock | tomllib 내장, UTF‑8 default | `PYTHONHASHSEED=0` 고정, `uvloop` 옵션 |
-| **Web API** | **FastAPI 1.4** + Uvicorn workers | Starlette ASGI = true async I/O<br>OpenAPI → 내부 SDK(py/js) 생성 | 모든 응답 헤더에 `trace_id`, `repo_id` |
+| **Web API** | **FastAPI 1.4** + Uvicorn workers | Starlette ASGI = true async I/O<br>OpenAPI → 내부 SDK(py/js) 생성 | 모든 응답 헤더에 `trace_uuid`, `repo_uuid` |
 | **RDBMS** | **PostgreSQL 16** | JSONB + Row‑Level Security, FTS GIST | pgbouncer pool, TLS in‑transit |
 | **벡터** | **pgvector 0.8 (HNSW)**<br>Free→code2vec 512dim<br>Org→BERT 1536dim | HNSW M=16, ef_construction=200 | 배치 `REINDEX VECTOR` 크론 |
-| **로깅 포맷** | **JSONL** (6 라벨 *svc,lvl,ts,uuid,repo,trace*) | tail‑f, S3 업로드, Loki 호환 | 민감 정보 RegExp 필터 |
+| **로깅 포맷** | **JSONL** (6 라벨 *svc,lvl,ts,id,repo,trace*) | tail‑f, S3 업로드, Loki 호환 | 민감 정보 RegExp 필터 |
 | **시스템 로그** | **Loki 3.0** + S3 obj‑store | 라벨 인덱싱 저비용, Grafana alert | error율 >1 % → Slack #infra |
 | **콘텐츠 로그** | **OpenSearch 3.0** + pgvector | plan prefix 색인, BM25 + HNSW | index‑level IAM |
 | **토큰 모니터** | **@track_tokens** (tiktoken) | 30 µs 오버헤드, 비용·latency 로그 | AccessKey 그룹별 cost view |
@@ -92,17 +92,17 @@
 
 ### 5‑1. 인증 플로우
 1. **OAuth 2.0** (google) → auth_code
-2. `user_info` UPSERT → `uuid`
+2. `user_info` UPSERT → `id`
 3. **JWT** (Access 10 min / Refresh 30 day)
 4. Refresh 토큰 AES‑256‑GCM 암호화 → `user_secret`
 5. `/refresh` → Access 갱신, Refresh Rotation
 
 ### 5‑2. RBAC 스키마
 ```sql
-role(role_id, name)
-action(action_id, code)
-role_action_map(role_id, action_id)
-user_info(uuid, email, role_id)
+role(role_uuid, name)
+action(action_uuid, code)
+role_action_map(role_uuid, action_uuid)
+user_info(id, email, role_uuid)
 ```
 
 ### 5‑3. 권한 검사 유틸
@@ -206,12 +206,12 @@ CREATE OR REPLACE FUNCTION log_plan_change() RETURNS trigger AS $$
 BEGIN
   IF NEW.plan_key <> OLD.plan_key THEN
     INSERT INTO user_plan_history(
-      uuid, old_plan_key, new_plan_key,
+      id, old_plan_key, new_plan_key,
       old_plan_label, new_plan_label,
       old_price_usd, new_price_usd,
       was_trial, effective_from
     )
-    SELECT OLD.uuid,
+    SELECT OLD.id,
            OLD.plan_key, NEW.plan_key,
            (SELECT plan_label FROM plan_catalog WHERE plan_key=OLD.plan_key),
            (SELECT plan_label FROM plan_catalog WHERE plan_key=NEW.plan_key),
@@ -236,14 +236,14 @@ def load_plan_catalog():
     with open("config/plan_catalog.yml") as f:
         return yaml.safe_load(f)
 
-def get_plan(user_id):
-    row = db.fetchrow("SELECT plan_key FROM user_plan WHERE uuid=%s", user_id)
+def get_plan(user_uuid):
+    row = db.fetchrow("SELECT plan_key FROM user_plan WHERE id=%s", user_uuid)
     return load_plan_catalog()[row['plan_key']]
 
-def enforce_limit(user_id, feature, amount=1):
-    plan = get_plan(user_id)
+def enforce_limit(user_uuid, feature, amount=1):
+    plan = get_plan(user_uuid)
     limit = plan.get(feature)
-    if limit and get_usage(user_id, feature)+amount > limit:
+    if limit and get_usage(user_uuid, feature)+amount > limit:
         raise HTTPException(429,f"{feature} 초과")
 ```
 
@@ -280,7 +280,7 @@ field = "embedding_bert" if plan in {{ "premium","org" }} else "embedding_code2v
 
 ## 9. 전체 시스템 데이터 흐름 & 모듈 연결
 
-IDE 종료 이벤트 ──► FastAPI(api) ──► Pre‑process(prep/, scoping/)
+uuidE 종료 이벤트 ──► FastAPI(api) ──► Pre‑process(prep/, scoping/)
 │ │
 │ └─► LLM Manager + @track_tokens
 │ │
@@ -294,14 +294,14 @@ Auto‑Commit(git add/commit/push)
 │
 ┌────────── OpenSearch 색인(embedding) ◄── embedding_worker
 │
-└─ Grafana / OsDash / Prometheus ←─ trace_id 기반 집계
+└─ Grafana / OsDash / Prometheus ←─ trace_uuid 기반 집계
 
 yaml
 항상 세부 정보 표시
 
 복사
 
-* **trace_id** : API → Loki → OpenSearch 연결 키  
+* **trace_uuid** : API → Loki → OpenSearch 연결 키  
 * **plan_key** : 색인 prefix·임베딩 필드 선택  
 * **action_log** : RBAC 감사, 누가 언제 무엇을 수정
 

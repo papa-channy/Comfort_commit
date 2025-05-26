@@ -1,5 +1,5 @@
 <h2>커밋 메시지 수정</h2>
-<form method="post" action="/review/{{ commit.id }}/submit">
-  <textarea name="final_msg" rows="6" style="width: 100%;">{{ commit.commit_msg }}</textarea>
+<form method="post" action="/review/{{ commit.uuid }}/submit">
+  <textarea name="final_msg" rows="6" style="wuuidth: 100%;">{{ commit.commit_msg }}</textarea>
   <button type="submit">✅ 커밋 확정</button>
 </form>

@@ -7,7 +7,7 @@ from scripts.upload_utils import get_file_path, do_git_commit, send_notification
 from scripts.ext_info import to_safe_filename
 import record.notion as notion
 
-def perform_git_commit(commit_id: int, msg: str):
+def perform_git_commit(commit_uuid: int, msg: str):
     import subprocess
     from pathlib import Path
     repo_path = Path("/your/repo/path")  # 수정 필요

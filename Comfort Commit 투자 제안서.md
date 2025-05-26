@@ -247,7 +247,7 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 
 ### 9.1. 문제 상황: "기억과의 싸움, 반복되는 비효율"
 
-* **개발자의 어려움:** "IDE(개발 프로그램)를 끄는 순간 작업 내용이 가물가물해지고, 나중에 작업 일지(커밋 메시지)를 쓰려고 하면 정확한 변경 이유와 과정을 기억하기 어렵습니다. 이는 부정확한 기록과 팀 협업의 어려움으로 이어집니다."
+* **개발자의 어려움:** "uuidE(개발 프로그램)를 끄는 순간 작업 내용이 가물가물해지고, 나중에 작업 일지(커밋 메시지)를 쓰려고 하면 정확한 변경 이유와 과정을 기억하기 어렵습니다. 이는 부정확한 기록과 팀 협업의 어려움으로 이어집니다."
 
 * **일반 회사원의 공감 (예: 마케팅팀 김 대리):**
     "월요일 아침, 지난주 금요일 퇴근 전에 처리했던 여러 기획안들의 세부 수정 사항이나 팀장님 피드백 내용을 정확히 기억해서 주간 보고서를 작성해야 할 때 막막합니다. 여러 프로젝트가 동시에 진행되면, 각 건별로 왜 그렇게 결정했는지, 누구와 어떤 내용을 논의했는지 정확히 떠올리는 데 많은 시간이 소요됩니다. 결국 보고서 품질도 떨어지고, 중요한 내용을 누락하기도 합니다."
@@ -267,7 +267,7 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 * **일반 회사원의 경험 (예: 영업팀 박 과장):**
     "중요 고객사와의 미팅이 끝나자마자, 스마트폰으로 간단히 미팅의 핵심 키워드나 결과만 음성으로 남겨도, AI 비서가 이를 회사의 표준 보고서 양식에 맞춰 'C고객사_신제품_견적문의_10%할인조건_제시_3개월내_피드백요청.pdf' 와 같이 깔끔한 미팅 보고서 초안으로 자동 변환해주는 것과 같습니다. 저는 내용만 최종 확인하고 'CRM 저장' 버튼만 누르면 되니, 이동 중에도 신속하고 정확하게 업무를 처리할 수 있습니다."
 
-* **개발자 솔루션:** "IDE 종료 시 또는 특정 작업 완료 시, 모바일 푸시 알림을 통해 생성된 커밋 초안을 링크로 전달받아, 이동 중에도 내용을 검토하고 승인할 수 있습니다."
+* **개발자 솔루션:** "uuidE 종료 시 또는 특정 작업 완료 시, 모바일 푸시 알림을 통해 생성된 커밋 초안을 링크로 전달받아, 이동 중에도 내용을 검토하고 승인할 수 있습니다."
 
 * **일반 회사원의 경험 (예: 마케팅팀 김 대리):**
     "퇴근하려고 사무실 컴퓨터를 종료하면, 바로 제 개인 메신저(카카오톡 등)로 "오늘 작업하신 기획안들, 이렇게 정리해서 팀 공유 폴더에 보고 자료로 업로드할까요?" 라는 알림 메시지를 받는 것과 같습니다. 지하철 안에서도 스마트폰으로 내용을 간편하게 확인하고 "네, 그대로 진행해주세요!" 버튼만 누르면, 번거로운 보고서 정리 및 제출 업무가 자동으로 완료되는 것입니다. 예전에는 사무실에 다시 돌아가 야근하며 처리해야 했던 일들이죠."
@@ -314,7 +314,7 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 
 [^7]: 실제 Simhash, Jaccard 등의 정적 분석 기법이 코드 컨텍스트 분석에 활용되는 연구 사례는 다수 존재합니다. 예를 들어, S. Kim, et al., "MeCC: A Method for Commit Classification Using Commit Messages and Code Changes", *Applied Sciences*, 2021. (이 연구는 커밋 메시지와 코드 변경을 함께 분석하여 커밋을 분류하며, 정적 분석 기법의 활용 가능성을 보여줍니다. Cc는 이러한 기법들을 종합적으로 활용하여 컨텍스트를 분석하며, 그 효과는 자체 검증을 통해 구체화될 것입니다.) Available at: [https://www.mdpi.com/2076-3417/11/21/10350](https://www.mdpi.com/2076-3417/11/21/10350)
 
-[^8]: OpenAI, "GPT Best Practices", *OpenAI Documentation*. (LLM의 성능은 프롬프트에 제공되는 컨텍스트의 질과 양에 크게 좌우되며, 명확하고 관련성 높은 정보를 간결하게 제공하는 것이 중요하다고 강조합니다. Cc의 정보 밀도 최적화는 이러한 프롬프트 엔지니어링 원칙에 기반하며, 구체적인 성능 향상 효과는 내부 실험을 통해 측정될 예정입니다.) Available at: [https://platform.openai.com/docs/guides/gpt-best-practices](https://platform.openai.com/docs/guides/gpt-best-practices)
+[^8]: OpenAI, "GPT Best Practices", *OpenAI Documentation*. (LLM의 성능은 프롬프트에 제공되는 컨텍스트의 질과 양에 크게 좌우되며, 명확하고 관련성 높은 정보를 간결하게 제공하는 것이 중요하다고 강조합니다. Cc의 정보 밀도 최적화는 이러한 프롬프트 엔지니어링 원칙에 기반하며, 구체적인 성능 향상 효과는 내부 실험을 통해 측정될 예정입니다.) Available at: [https://platform.openai.com/docs/guuuides/gpt-best-practices](https://platform.openai.com/docs/guuuides/gpt-best-practices)
 
 [^9]: D. S. Wuu, et al., "An Empirical Study on the Use of Automatic Commit Message Generation Tools in Practice", *Proceedings of the ACM/IEEE International Symposium on Empirical Software Engineering and Measurement (ESEM)*, 2023. (자동 커밋 생성 도구의 사용 효과에 대한 연구들이 있으며, 일부 연구에서는 시간 절약 효과를 보고하기도 합니다. Cc의 60% 단축 목표는 내부 KPI이며, 실제 효과는 사용자 데이터 기반으로 측정될 것입니다.) (유사 연구 검색 필요)
 
@@ -328,4 +328,4 @@ Cc는 명확한 시장의 문제점을 해결하고, 독창적인 기술과 사�
 
 [^14]: Userpilot, "Average Customer Acquisition Cost: Benchmarks by Industry". (SaaS 산업의 평균 고객 확보 비용(CAC) 등의 벤치마크 자료를 참고하여, 초기 사용자 확보 목표의 현실성을 가늠해 볼 수 있습니다. 다만, Cc과 같은 개발자 대상 B2C/B2B 하이브리드 모델의 정확한 벤치마크는 찾기 어려우므로, 초기에는 공격적인 목표 설정 후 실제 데이터를 통해 조정해 나갈 필요가 있습니다.) Available at: [https://userpilot.com/blog/average-customer-acquisition-cost/](https://userpilot.com/blog/average-customer-acquisition-cost/) (검색 결과 기반)
 
-[^15]: Evidently AI, "LLM evaluation metrics and methods, explained simply". (LLM 성능 평가는 다양한 지표(정확도, 재현율, F1-Score, BLEU, ROUGE 등)와 방법(결정론적 매칭, 텍스트 통계, 사용자 피드백)을 활용하여 이루어집니다. Cc의 데이터 유의미성 검증 시 이러한 표준적인 평가 지표 및 방법론을 참고하여 설계할 것입니다.) Available at: [https://www.evidentlyai.com/llm-guide/llm-evaluation-metrics](https://www.evidentlyai.com/llm-guide/llm-evaluation-metrics) (검색 결과 기반)
+[^15]: Evuuidently AI, "LLM evaluation metrics and methods, explained simply". (LLM 성능 평가는 다양한 지표(정확도, 재현율, F1-Score, BLEU, ROUGE 등)와 방법(결정론적 매칭, 텍스트 통계, 사용자 피드백)을 활용하여 이루어집니다. Cc의 데이터 유의미성 검증 시 이러한 표준적인 평가 지표 및 방법론을 참고하여 설계할 것입니다.) Available at: [https://www.evuuidentlyai.com/llm-guuuide/llm-evaluation-metrics](https://www.evuuidentlyai.com/llm-guuuide/llm-evaluation-metrics) (검색 결과 기반)

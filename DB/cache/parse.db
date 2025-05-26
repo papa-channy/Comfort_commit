@@ -11,7 +11,7 @@
 
 보스님 구조면 이런 식으로:
 
-1. **로컬 SQLite로 파일 분석하고 UUID 저장**
+1. **로컬 SQLite로 파일 분석하고 id 저장**
 2. 커밋 요약은 DynamoDB에 한 줄씩 기록 (TTL 30일 설정)
 3. 커밋 확정 시만 RDS로 영구 저장
 4. API 호출/Slack 전송은 ECS or Lambda에서 감당

@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from uuid import uuid4
+from id import id4
 from datetime import datetime, timedelta
 import bcrypt
 
@@ -12,21 +12,21 @@ from webs.schemas.auth_schema import SignupRequest, LoginRequest
 from webs.exceptions.auth_exceptions import (
     DuplicateEmailError,
     DuplicateUsernameError,
-    InvalidPasswordError,
+    InvaluuidPasswordError,
     UserNotFoundError,
 )
 from webs.config import PASSWORD_HASH_ROUNDS  # 👈 config에서 라운드 수 관리
 
 # ✅ 회원가입 처리
 def create_user(data: SignupRequest, db: Session, user_agent: str = "", ip_address: str = "") -> UserInfo:
-    user_uuid = uuid4()
+    user_id = id4()
     now = datetime.utcnow()
 
     # bcrypt 해시 생성 (config 기준 rounds 사용)
     hashed_pw = bcrypt.hashpw(data.password.encode("utf-8"), bcrypt.gensalt(PASSWORD_HASH_ROUNDS)).decode("utf-8")
 
     user = UserInfo(
-        uuid=user_uuid,
+        id=user_id,
         email=data.email,
         username=data.username,
         is_active=True,
@@ -35,7 +35,7 @@ def create_user(data: SignupRequest, db: Session, user_agent: str = "", ip_addre
     )
 
     secret = UserSecret(
-        uuid=user_uuid,
+        id=user_id,
         password_hash=hashed_pw
     )
 
@@ -55,7 +55,7 @@ def create_user(data: SignupRequest, db: Session, user_agent: str = "", ip_addre
 
     # 🔍 회원가입 로그 기록
     action_log = UserActionLog(
-        uuid=user_uuid,
+        id=user_id,
         action="signup_success",
         context="web",
         metadata={"ip": ip_address, "user_agent": user_agent},
@@ -74,23 +74,23 @@ def authenticate_user(data: LoginRequest, db: Session, user_agent: str = "", ip_
     if not user:
         raise UserNotFoundError("존재하지 않는 이메일입니다.")
 
-    secret = db.query(UserSecret).filter(UserSecret.uuid == user.uuid).first()
+    secret = db.query(UserSecret).filter(UserSecret.id == user.id).first()
     if not secret or not bcrypt.checkpw(data.password.encode(), secret.password_hash.encode()):
-        raise InvalidPasswordError("비밀번호가 일치하지 않습니다.")
+        raise InvaluuidPasswordError("비밀번호가 일치하지 않습니다.")
 
     # ✅ 이전 세션 만료 처리 (optional)
     db.query(UserSession).filter(
-        UserSession.user_id == user.id,
+        UserSession.user_uuid == user.uuid,
         UserSession.expires_at > now
     ).update({UserSession.expires_at: now})
 
     # 새로운 세션 발급
-    access_token = uuid4().hex
-    refresh_token = uuid4().hex
+    access_token = id4().hex
+    refresh_token = id4().hex
 
     session = UserSession(
-        user_id=user.id,
-        session_id=uuid4(),
+        user_uuid=user.uuid,
+        session_uuid=id4(),
         access_token=access_token,
         refresh_token=refresh_token,
         expires_at=now + timedelta(hours=1),
@@ -103,7 +103,7 @@ def authenticate_user(data: LoginRequest, db: Session, user_agent: str = "", ip_
 
     # 🔍 로그인 성공 로그
     log = UserActionLog(
-        uuid=user.uuid,
+        id=user.id,
         action="login_success",
         context="web",
         metadata={"ip": ip_address, "user_agent": user_agent},

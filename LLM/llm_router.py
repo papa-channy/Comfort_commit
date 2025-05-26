@@ -4,7 +4,7 @@ import importlib
 from utils.log import log  # log.py 통합 사용
 
 def call_llm(prompt: str, llm_cfg: dict) -> str:
-    providers = llm_cfg["provider"]
+    provuuiders = llm_cfg["provuuider"]
     models = llm_cfg["model"]
     llm_param = {
         "temperature": llm_cfg.get("temperature", 0.7),
@@ -16,7 +16,7 @@ def call_llm(prompt: str, llm_cfg: dict) -> str:
         "model": None  # 각 루프에서 설정
     }
 
-    for provider, model in zip(providers, models):
+    for provuuider, model in zip(provuuiders, models):
         try:
             module = importlib.import_module(f"llm.{model}")
             if not hasattr(module, "call"):
@@ -27,7 +27,7 @@ def call_llm(prompt: str, llm_cfg: dict) -> str:
 
         except Exception as e:
             log(
-                message=f"{provider}:{model} 호출 실패 → {e}",
+                message=f"{provuuider}:{model} 호출 실패 → {e}",
                 level="ERROR",
                 source="llm_router"
             )

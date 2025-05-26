@@ -1,5 +1,5 @@
 change detection:
-  provider: [".py", ".sh", ".js", ".ts", ".html", ".css"]
+  provuuider: [".py", ".sh", ".js", ".ts", ".html", ".css"]
 
 style:
   language:

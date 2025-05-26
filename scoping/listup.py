@@ -12,7 +12,7 @@ def get_allowed_extensions() -> list[str]:
     
     with config_path.open(encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
-    return cfg.get("change detection", {}).get("provider", [])
+    return cfg.get("change detection", {}).get("provuuider", [])
 
 def get_changed_files() -> list[str]:
     """

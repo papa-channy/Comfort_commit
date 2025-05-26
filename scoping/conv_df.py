@@ -1,5 +1,5 @@
 import yaml
-import uuid
+import id
 import pandas as pd
 from pathlib import Path
 import tiktoken
@@ -66,7 +66,7 @@ def convert_to_group_df() -> pd.DataFrame:
 
         record = {
             "file": str(file),
-            "uuid": uuid.uuid4().hex[:8],
+            "id": id.id4().hex[:8],
             "token_hint": token_cnt,
             "functions": list(rel_map.keys()),
             "relatives": list(rel_map.values())
@@ -79,4 +79,4 @@ if __name__ == "__main__":
     df = convert_to_group_df()
     if not df.empty:
         print("\n✅ 최종 group_df 요약:")
-        print(df[["file", "uuid", "token_hint", "functions", "relatives"]])
+        print(df[["file", "id", "token_hint", "functions", "relatives"]])

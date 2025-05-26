@@ -2,5 +2,5 @@
 
 class DuplicateEmailError(Exception): pass
 class DuplicateUsernameError(Exception): pass
-class InvalidPasswordError(Exception): pass
+class InvaluuidPasswordError(Exception): pass
 class UserNotFoundError(Exception): pass
